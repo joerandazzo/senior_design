@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Drone Camera</string>
+    <string name="action_settings">Settings</string>
+
+
+    <!-- Settings -->
+    <string name="calibrate">Calibrate</string>
+    <string name="bluetooth">Bluetooth</string>
+</resources>
