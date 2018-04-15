@@ -1,4 +1,4 @@
-package edu.siue.mech.seniordesign;
+package edu.siue.mech.seniordesign.system;
 
 
 import android.bluetooth.BluetoothAdapter;
@@ -27,20 +27,12 @@ public class BluetoothConnection {
     public BluetoothConnection(BTConnectionListener listener) {
         this.bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         this.listener = listener;
-        init();
     }
 
-    private void init() {
+    public void connect() {
         BluetoothDevice device = getBaseCam();
         if (device == null) {
             this.listener.onDeviceNotFound();
-        }
-        connect(device);
-    }
-
-    public void connect(BluetoothDevice device) {
-        if (device == null) {
-            return;
         }
 
         //disconnect if open

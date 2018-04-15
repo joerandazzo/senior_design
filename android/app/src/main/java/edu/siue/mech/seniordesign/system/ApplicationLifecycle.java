@@ -10,7 +10,7 @@
  *
  */
 
-package edu.siue.mech.seniordesign;
+package edu.siue.mech.seniordesign.system;
 
 
 import android.app.Activity;

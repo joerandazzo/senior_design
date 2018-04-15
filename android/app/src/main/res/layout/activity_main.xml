@@ -10,6 +10,7 @@
         android:id="@+id/ivSettings"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:layout_alignParentRight="true"
         android:layout_margin="15dp"
         android:scaleType="fitCenter"
@@ -25,6 +26,7 @@
         android:src="@mipmap/ic_launcher" />
 
     <Button
+        android:id="@+id/btnLaunchVideo"
         android:layout_width="250dp"
         android:layout_height="40dp"
         android:layout_below="@id/ivLogo"
@@ -32,6 +34,80 @@
         android:background="@android:color/darker_gray"
         android:text="Launch Video"
         android:textColor="@android:color/white" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="50dp"
+        android:id="@+id/llConnection"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnConnect"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:background="@android:color/darker_gray"
+            android:text="Connect"
+            android:textColor="@android:color/white" />
+
+        <View
+            android:layout_width="20dp"
+            android:layout_height="0dp"
+            android:background="@android:color/white" />
+
+        <Button
+            android:id="@+id/btnDisconnect"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="20dp"
+            android:layout_weight="1"
+            android:background="@android:color/darker_gray"
+            android:text="Disconnect"
+            android:textColor="@android:color/white" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="75dp"
+        android:id="@+id/llMotors"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnTurnMotorsOn"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:background="@android:color/darker_gray"
+            android:text="Turn On Motors"
+            android:textColor="@android:color/white" />
+
+        <View
+            android:layout_width="20dp"
+            android:layout_height="0dp"
+            android:background="@android:color/white" />
+
+        <Button
+            android:id="@+id/btnTurnMotorsOff"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="20dp"
+            android:layout_weight="1"
+            android:background="@android:color/darker_gray"
+            android:text="Turn Off Motors"
+            android:textColor="@android:color/white" />
+
+
+    </LinearLayout>
 
 
 </RelativeLayout>
