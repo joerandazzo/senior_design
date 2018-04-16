@@ -29,13 +29,13 @@ public class StabilizationManager {
 
     }
 
-    public void sendData(int command){
+    public void sendData(int command, byte[] values){
         if(socket == null){
             Log.d(TAG, "Tried to send data but there is no socket, check connection");
             return;
         }
 
-        final byte[] packet = getPacket(command, null);
+        final byte[] packet = getPacket(command, values);
         try {
             socket.getOutputStream().write(packet);
         } catch (IOException e) {
@@ -50,11 +50,18 @@ public class StabilizationManager {
         byte[] dataSize = new byte[0];
         int modulus = (byte) ((commandId + dataSize.length) % 256);
 
-        packet[0] = 62; //Start character
-        packet[1] = ((byte) (commandId & 0xFF)); //Command ID (Unsigned)
-        packet[2] = ((byte) (dataSize.length & 0xFF)); //Data size (Unsigned)
-        packet[3] = ((byte) (modulus & 0xFF)); //Header checksum (Unsigned)
-        //packet[4] = ((byte) (values.length & 0xFF));
+        if(commandId == 77) {  //Construct MOTORS_OFF Command
+            packet[0] = 62; //Start character
+            packet[1] = ((byte) (commandId & 0xFF)); //Command ID (Unsigned)
+            packet[2] = ((byte) (dataSize.length & 0xFF)); //Data size (Unsigned)
+            packet[3] = ((byte) (modulus & 0xFF)); //Header checksum (Unsigned)
+        } else if (commandId == 109) { //Construct MOTORS_ON Command
+            packet[0] = 62; //Start character
+            packet[1] = ((byte) (commandId & 0xFF)); //Command ID (Unsigned)
+            packet[2] = ((byte) (dataSize.length & 0xFF)); //Data size (Unsigned)
+            packet[3] = ((byte) (modulus & 0xFF)); //Header Checksum (Unsigned)
+        }
+        // packet[4] = ((byte) (values.length & 0xFF));
         //packet[5] = ??
         return packet;
     }
