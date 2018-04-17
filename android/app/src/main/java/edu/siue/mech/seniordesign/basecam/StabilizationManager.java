@@ -26,7 +26,11 @@ public class StabilizationManager {
     }
 
     public void sendOrientation(float yaw, float pitch, float roll){
-
+        //We are dealing with 1 degree increments, so truncate fractional portion off
+        yaw = (int) yaw;
+        pitch = (int) pitch;
+        roll = (int) roll;
+        
     }
 
     public void sendData(int command, byte[] values){
