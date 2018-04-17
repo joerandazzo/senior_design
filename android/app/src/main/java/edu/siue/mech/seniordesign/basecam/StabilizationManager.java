@@ -60,6 +60,26 @@ public class StabilizationManager {
             packet[1] = ((byte) (commandId & 0xFF)); //Command ID (Unsigned)
             packet[2] = ((byte) (dataSize.length & 0xFF)); //Data size (Unsigned)
             packet[3] = ((byte) (modulus & 0xFF)); //Header Checksum (Unsigned)
+        } else if (commandId == 67) { //Construct CONTROL Command
+            packet[0] = 62; //Start character
+            packet[1] = ((byte) (commandId & 0xFF)); //Command ID (Unsigned)
+            packet[2] = ((byte) (dataSize.length & 0xFF)); //Data size (Unsigned)
+            packet[3] = ((byte) (modulus & 0xFF)); //Header checksum (Unsigned)
+            //packet[4] = CONTROL_MODE (Unsigned)
+            //packet[5] = first byte in ROLL_SPEED (Signed)
+            //packet[6] = second "    "  "     "      "
+            //packet[7] = first byte in ROLL_ANGLE (Signed)
+            //packet[8] = second "    "   "    "      "
+            //packet[9] = first byte in PITCH_SPEED (Signed)
+            //packet[10] = second "    "  "     "      "
+            //packet[11] = first byte in PITCH_ANGLE (Signed)
+            //packet[12] = second "    "   "    "      "
+            //packet[13] = first byte in YAW_SPEED (Signed)
+            //packet[14] = second "    "  "     "      "
+            //packet[15] = first byte in YAW_ANGLE (Signed)
+            //packet[16] = second "    "   "    "      "
+            //packet[17] = body checksum (unsigned)
+
         }
         // packet[4] = ((byte) (values.length & 0xFF));
         //packet[5] = ??
