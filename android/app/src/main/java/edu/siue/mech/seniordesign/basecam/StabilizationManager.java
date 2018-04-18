@@ -30,7 +30,7 @@ public class StabilizationManager {
         yaw = (int) yaw;
         pitch = (int) pitch;
         roll = (int) roll;
-        
+
     }
 
     public void sendData(int command, byte[] values){
