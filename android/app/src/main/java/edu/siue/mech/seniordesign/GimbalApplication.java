@@ -62,7 +62,7 @@ public class GimbalApplication extends Application implements ApplicationLifecyc
     private OrientationManager.OrientationListener orientationListener = new OrientationManager.OrientationListener() {
         @Override
         public void onOrientationChanged(final float yaw, final float pitch, final float roll) {
-            // Log.d(TAG, String.format(" x: %.2f , y:%.2f, z: %.2f", yaw, pitch, roll));
+            Log.d(TAG, String.format(" x: %.2f , y:%.2f, z: %.2f", yaw, pitch, roll));
             stabilizationManager.sendOrientation(yaw, pitch, roll);
         }
     };

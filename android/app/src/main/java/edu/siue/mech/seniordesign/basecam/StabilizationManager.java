@@ -2,6 +2,7 @@ package edu.siue.mech.seniordesign.basecam;
 
 
 import android.bluetooth.BluetoothSocket;
+import android.support.v4.app.INotificationSideChannel;
 import android.util.Log;
 
 import java.io.IOException;
@@ -18,19 +19,24 @@ public class StabilizationManager {
     }
 
     public void turnOnMotors(){
-        sendData(CMD.MOTORS_ON.value);
+        byte [] values = new byte[1]; //Garbage values so we don't get a compile error
+        sendData(CMD.MOTORS_ON.value, values);
     }
 
     public void turnOffMotors(){
-        sendData(CMD.MOTORS_OFF.value);
+        byte [] values = new byte[1]; //Garbage values so we don't get a compile error
+        sendData(CMD.MOTORS_OFF.value, values);
     }
 
     public void sendOrientation(float yaw, float pitch, float roll){
         //We are dealing with 1 degree increments, so truncate fractional portion off
-        yaw = (int) yaw;
-        pitch = (int) pitch;
-        roll = (int) roll;
+        int yaw_i = (int)yaw;
+        int pitch_i = (int)pitch;
+        int roll_i = (int)roll;
 
+        String hex_yaw = Integer.toHexString(yaw_i).substring(4);
+        String hex_pitch = Integer.toHexString(pitch_i).substring(4);
+        String hex_roll = Integer.toHexString(roll_i).substring(4);
     }
 
     public void sendData(int command, byte[] values){
