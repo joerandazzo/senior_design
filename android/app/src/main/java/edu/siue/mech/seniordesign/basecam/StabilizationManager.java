@@ -36,14 +36,10 @@ public class StabilizationManager {
 
         // Speeds set to 0 so they are controlled by board. Idea is that the time increments are
         // small enough that it might not be noticeable
-        byte [] values = new byte[]{(byte)(roll_i & 0x00FF), (byte)((roll_i & 0xFF00)>>8), 0x00,  0x00, //Roll angle, split into two byte component, and two bytes for speed
-                (byte)(pitch_i & 0x00FF), (byte)((pitch_i & 0xFF00)>>8), 0x00, 0x00, //Pitch angle, split into two byte components, and two bytes for speed
-                (byte)(yaw_i & 0x00FF), (byte)((yaw_i & 0xFF00)>>8), 0x00, 0x00}; //Yaw angle, split into two byte components, and two bytes for speed
-//        String hex_yaw = Integer.toHexString(yaw_i).substring(4);
-//        String hex_pitch = Integer.toHexString(pitch_i).substring(4);
-//        String hex_roll = Integer.toHexString(roll_i).substring(4);
-
-
+        byte [] values = new byte[]{(byte)(02 & 0xFF), //Control code for MODE_ANGLE
+                (byte)((roll_i & 0xFF00)>>8), (byte)(roll_i & 0x00FF), 0x00,  0x00, //Roll angle, split into two byte component, and two bytes for speed
+                (byte)((pitch_i & 0xFF00)>>8), (byte)(pitch_i & 0x00FF), 0x00, 0x00, //Pitch angle, split into two byte components, and two bytes for speed
+                (byte)((yaw_i & 0xFF00)>>8), (byte)(yaw_i & 0x00FF), 0x00, 0x00}; //Yaw angle, split into two byte components, and two bytes for speed
     }
 
     public void sendData(int command, byte[] values){
