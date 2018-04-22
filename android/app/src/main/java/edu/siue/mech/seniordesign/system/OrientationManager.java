@@ -7,6 +7,9 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
 import android.view.Surface;
 import android.view.WindowManager;
 
@@ -17,6 +20,8 @@ public class OrientationManager implements SensorEventListener {
     private final Sensor rotationSensor;
     private int lastAccuracy;
     private OrientationListener listener;
+    private HandlerThread sensorThread;
+    private Handler sensorHandler;
 
     public interface OrientationListener {
         void onOrientationChanged(float yaw, float pitch, float roll);
@@ -27,15 +32,18 @@ public class OrientationManager implements SensorEventListener {
         this.sensorManager = (SensorManager)context.getSystemService(Activity.SENSOR_SERVICE);
         this.rotationSensor =sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
         this.listener = listener;
-
+        sensorThread = new HandlerThread("Sensor thread", Thread.MAX_PRIORITY);
+        sensorThread.start();
+        sensorHandler = new Handler(sensorThread.getLooper());
     }
 
     public void start(){
-        sensorManager.registerListener(this, rotationSensor, SensorManager.SENSOR_DELAY_GAME);
+        sensorManager.registerListener(this, rotationSensor, SensorManager.SENSOR_DELAY_GAME, sensorHandler);
     }
 
     public void stop(){
         sensorManager.unregisterListener(this);
+        sensorThread.quitSafely();
     }
 
 

@@ -2,20 +2,23 @@ package edu.siue.mech.seniordesign.basecam;
 
 
 import android.bluetooth.BluetoothSocket;
+import android.os.Debug;
+import android.os.Handler;
 import android.support.v4.app.INotificationSideChannel;
 import android.util.Log;
 
 import java.io.IOException;
 
+import edu.siue.mech.seniordesign.system.BluetoothConnection;
+
 public class StabilizationManager {
     private static final String TAG = StabilizationManager.class.getSimpleName();
-    BluetoothSocket socket;
-
+    BluetoothConnection connection;
     public StabilizationManager(){
     }
 
-    public void setBTSocket(BluetoothSocket socket){
-        this.socket = socket;
+    public void setBluetooth(BluetoothConnection connection){
+        this.connection = connection;
     }
 
     public void turnOnMotors(){
@@ -43,20 +46,10 @@ public class StabilizationManager {
         sendData(CMD.CONTROL.value, values);
     }
 
-    public void sendData(int command, byte[] values){
-        if(socket == null){
-            Log.d(TAG, "Tried to send data but there is no socket, check connection");
-            return;
-        }
-
+    public void sendData(final int command, final byte[] values){
         final byte[] packet = getPacket(command, values);
-        try {
-            socket.getOutputStream().write(packet);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        connection.write(packet);
     }
-
 
     //Packet definition on page 3 of serial API docs
     private static byte[] getPacket(int commandId, byte[] values){

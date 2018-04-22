@@ -4,6 +4,8 @@ package edu.siue.mech.seniordesign;
 import android.app.Activity;
 import android.app.Application;
 import android.bluetooth.BluetoothSocket;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -28,34 +30,54 @@ public class GimbalApplication extends Application implements ApplicationLifecyc
         connection = new BluetoothConnection(listener);
         orientationManager = new OrientationManager(this, orientationListener);
         stabilizationManager = new StabilizationManager();
+        stabilizationManager.setBluetooth(connection);
     }
 
     private BluetoothConnection.BTConnectionListener listener = new BluetoothConnection.BTConnectionListener() {
         @Override
         public void onDeviceNotFound() {
             Log.d(TAG, "Device not found");
-            Toast.makeText(getApplicationContext(), "Device NOT FOUND", Toast.LENGTH_LONG).show();
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getApplicationContext(), "Device NOT FOUND", Toast.LENGTH_LONG).show();
+                }
+            });
         }
 
         @Override
         public void onDeviceConnectFail() {
             Log.d(TAG, "Device connect fail");
-            Toast.makeText(getApplicationContext(), "Device CONNECT FAIL", Toast.LENGTH_LONG).show();
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getApplicationContext(), "Device CONNECT FAIL", Toast.LENGTH_LONG).show();
+                }
+            });
         }
 
         @Override
         public void onDeviceConnected(BluetoothSocket socket) {
             Log.d(TAG, "Device connected");
-            Toast.makeText(getApplicationContext(), "Device CONNECTED", Toast.LENGTH_LONG).show();
-            stabilizationManager.setBTSocket(socket);
-
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getApplicationContext(), "Device CONNECTED", Toast.LENGTH_LONG).show();
+                }
+            });
+            orientationManager.start();
         }
 
         @Override
         public void onDeviceDisconnected() {
             Log.d(TAG, "Device disconnected");
-            Toast.makeText(getApplicationContext(), "Device disconnected", Toast.LENGTH_LONG).show();
-            stabilizationManager.setBTSocket(null);
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getApplicationContext(), "Device disconnected", Toast.LENGTH_LONG).show();
+                }
+            });
+            orientationManager.stop();
         }
     };
 
@@ -63,6 +85,7 @@ public class GimbalApplication extends Application implements ApplicationLifecyc
         @Override
         public void onOrientationChanged(final float yaw, final float pitch, final float roll) {
 //            Log.d(TAG, String.format(" x: %.2f , y:%.2f, z: %.2f", yaw, pitch, roll));
+
             stabilizationManager.sendOrientation(yaw, pitch, roll);
         }
     };
@@ -81,11 +104,13 @@ public class GimbalApplication extends Application implements ApplicationLifecyc
 
     @Override
     public void turnMotorsOn() {
+        Toast.makeText(getApplicationContext(), "Attempting to turn on motors", Toast.LENGTH_LONG).show();
         stabilizationManager.turnOnMotors();
     }
 
     @Override
     public void turnMotorsOff() {
+        Toast.makeText(getApplicationContext(), "Attempting to turn off motors", Toast.LENGTH_LONG).show();
         stabilizationManager.turnOffMotors();
     }
 

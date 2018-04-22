@@ -52,7 +52,7 @@ public class BluetoothConnection {
         });
 
         //actually connect
-        connectThread.run();
+        connectThread.start();
     }
 
     public void disconnect(){
@@ -60,6 +60,14 @@ public class BluetoothConnection {
             connectThread.cancel();
             connectThread = null;
         }
+    }
+
+    public void write(byte[] packet){
+        if(connectThread == null || connectThread.socket == null || !connectThread.socket.isConnected()){
+            return;
+        }
+
+        connectThread.write(packet);
     }
 
     private BluetoothDevice getBaseCam() {
@@ -87,8 +95,8 @@ public class BluetoothConnection {
     }
 
     class ConnectThread extends Thread {
-        private final BluetoothSocket socket;
-        private ConnectListener connectListener;
+        final BluetoothSocket socket;
+        ConnectListener connectListener;
 
         public ConnectThread(BluetoothDevice device, ConnectListener listener) {
             // Use a temporary object that is later assigned to mmSocket
@@ -125,6 +133,18 @@ public class BluetoothConnection {
                 return;
             }
             connectListener.onConnectSuccess(socket);
+        }
+
+        public synchronized void write(byte[] packet){
+            try {
+                if(socket == null || socket.getOutputStream() == null){
+                    Log.d(TAG, "Tried to send data but there is no socket, check connection");
+                    return;
+                }
+                socket.getOutputStream().write(packet);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         // Closes the client socket and causes the thread to finish.
